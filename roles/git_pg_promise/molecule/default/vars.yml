@@ -1,0 +1,6 @@
+---
+# vars file for git_pg-promise
+dir: /app/pg-promise
+pg_conf: /etc/pg_environment.conf
+gituser: "{{ vault_gituser }}"
+gitpass: "{{ vault_gitpass }}"

@@ -1,0 +1,33 @@
+---
+# tasks file to configure postgresql local
+- name: Finding postgresql conf file
+  find:
+    paths: /etc/postgresql
+    patterns: pg_hba.conf
+    recurse: yes
+  register: pg_hba
+  tags:
+  - psql
+
+- name: start postgresql
+  service:
+    name: postgresql
+    state: started
+    enabled: true 
+
+- name: show content of pg_hba
+  debug: var=pg_hba.files[0].path
+  tags:
+  - psql
+    
+- name: Replace peer to be trust in postgresql conf
+  lineinfile:
+    path: "{{ pg_hba.files[0].path }}"
+    regex: '^local   all             postgres                                peer'
+    line: "local   all             postgres                                trust"
+    state: present 
+  notify:
+   - Restart postgresql
+  tags:
+  - psql
+

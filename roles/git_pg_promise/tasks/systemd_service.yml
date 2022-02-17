@@ -1,0 +1,11 @@
+---
+- name: Create a service unit file to pg-promise application
+  template:
+    src: service.j2
+    dest: /lib/systemd/system/app.service
+
+- name: Start systemd service
+  systemd:
+    name: app
+    state: started
+    enabled: yes

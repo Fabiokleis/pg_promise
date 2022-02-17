@@ -1,0 +1,13 @@
+---
+# handlers file for git_pg-promise
+- name: Restart postgresql
+  service:
+    name: postgresql
+    state: restarted
+    enabled: true
+
+- name: Restart app
+  service:
+    name: app
+    state: restarted
+    enabled: true

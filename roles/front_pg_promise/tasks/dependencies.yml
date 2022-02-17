@@ -1,0 +1,14 @@
+---
+- name: Install dependencies to run front react-app 
+  package:
+    name:
+      - wget
+      - git
+    state: present
+    update_cache: yes
+  register: dp_results
+  tags:
+    - install
+
+- name: show the dependencies result
+  debug: var=dp_results.stdout  

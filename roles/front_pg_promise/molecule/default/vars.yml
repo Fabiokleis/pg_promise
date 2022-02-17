@@ -1,0 +1,5 @@
+---
+# vars file for git_pg-promise
+dir: /app/front_pg-promise
+gituser: "{{ vault_gituser }}"
+gitpass: "{{ vault_gitpass }}"

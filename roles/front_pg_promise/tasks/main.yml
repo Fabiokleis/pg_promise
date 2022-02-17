@@ -1,0 +1,60 @@
+---
+# tasks file for front_pg-promise
+- name: Install dependencies
+  import_tasks: dependencies.yml
+
+- name: clone frontend repo
+  git:
+    repo: "https://{{ gituser }}:{{ gitpass }}@github.com/fabiokleis/pg_promise-front"
+    dest: "{{ dir }}"
+  register: git_results
+  tags:
+    - clone
+
+- name: show git clone results
+  debug: var=git_results.stdout
+  tags:
+    - clone
+
+- name: Install npm update
+  shell: npm install -g npm@8.4.1
+  tags:
+    - npm_update
+
+- name: Install node modules
+  npm:
+    path: "{{ dir }}" 
+  register: npm_results
+  tags:
+    - npm_install
+
+- name: show npm modules results
+  debug: var=npm_results.stdout
+  tags:
+    - npm_install
+
+- name: Build react-app
+  shell: "npm run build"
+  args:
+    chdir: "{{ dir }}"
+  register: build
+  tags:
+    - npm_install
+
+- name: show build results
+  debug: var=build.stdout
+  tags:
+    - npm_install
+
+- name: Install serve
+  shell: "npm install -g serve"
+  register: serve
+  tags:
+    - npm_install
+
+- name: show serve results
+  debug: var=serve.stdout
+  tags:
+    - npm_install
+
+

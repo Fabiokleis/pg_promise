@@ -1,0 +1,65 @@
+---
+# tasks file for git_pg-promise app
+- name: Install dependencies
+  import_tasks: dependencies.yml
+
+- name: Configure postgresql
+  import_tasks: psql.yml 
+
+- name: Sending environment variables
+  template:
+    src: env.j2
+    dest: "{{ pg_conf }}"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  tags:
+    - config
+
+- name: clone repo 
+  git:
+    repo: "https://{{ gituser }}:{{ gitpass }}@github.com/fabiokleis/pg-promise"
+    dest: "{{ dir }}" 
+  tags:
+    - clone
+
+- name: Install npm update
+  shell: npm install -g npm@8.3.2
+  tags:
+    - npm_update
+  changed_when: false
+
+- name: Install npm modules
+  npm:
+    path: "{{ dir }}"
+  register: npm_results
+  tags:
+    - npm_install
+
+- name: show npm result
+  debug: var=npm_results.stdout
+  tags:
+    - npm_install
+
+- name: Loading environment variables
+  shell: "set -o allexport; . {{ pg_conf }}; set +o allexport"
+  changed_when: false
+  notify:
+    - Restart postgresql
+
+- name: Flush handlers
+  meta: flush_handlers
+  changed_when: false
+
+- name: Create database
+  shell: "npm run createdb"
+  args:
+    chdir: "{{ dir }}"
+  changed_when: false
+  tags:
+    - database
+
+- name: Start app
+  import_tasks: systemd_service.yml
+  tags:
+    - start

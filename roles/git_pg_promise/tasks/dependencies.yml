@@ -1,0 +1,16 @@
+---
+# tasks file to install dependencies
+- name: Install dependencies to run the project
+  package:
+    name: 
+      - wget
+      - postgresql
+      - git
+    state: present
+    update_cache: yes
+  register: dp_results
+  tags:
+    - install
+
+- name: show the dependencies result
+  debug: var=dp_results.stdout
