@@ -40,12 +40,10 @@ tags: []
 # collection label 'namespace.name'. The value is a version range
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
-dependencies: {
-  'geerlingguy.nodejs': '>=2.4'
-}
+dependencies: {}
 
 # The URL of the originating SCM repository
-repository: http://example.com/repository
+repository: https://github.com/Fabiokleis/pg_promise
 
 # The URL to any online docs
 documentation: http://docs.example.com
@@ -60,5 +58,5 @@ issues: http://example.com/issue/tracker
 # artifact. A pattern is matched from the relative path of the file or directory of the collection directory. This
 # uses 'fnmatch' to match the files or directories. Some directories and files like 'galaxy.yml', '*.pyc', '*.retry',
 # and '.git' are always filtered
-build_ignore: []
-
+build_ignore:
+  - .gitignore
